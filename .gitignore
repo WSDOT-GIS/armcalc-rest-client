@@ -1,3 +1,6 @@
+typings
+**/*.js
+
 # Logs
 logs
 *.log
