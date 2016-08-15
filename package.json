@@ -1,10 +1,10 @@
 {
   "name": "armcalc-rest-client",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Client for WSDOT ARMCalc REST API",
   "main": "armcalc-client.js",
   "scripts": {
-    "preinstall": "typings && tsc",
+    "preinstall": "typings install && tsc",
     "test": "jasmine"
   },
   "private": true,
