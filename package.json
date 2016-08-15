@@ -4,7 +4,9 @@
   "description": "Client for WSDOT ARMCalc REST API",
   "main": "armcalc-client.js",
   "scripts": {
-    "preinstall": "typings install && tsc",
+    "preinstall": "echo Getting typings… && typings install --production && echo Compiling TypeScript… && tsc --project tsconfigNoTest.json && echo done.",
+    "build": "echo Getting typings… && typings install && tsc && echo done",
+    "pretest": "npm run-script build",
     "test": "jasmine"
   },
   "private": true,
