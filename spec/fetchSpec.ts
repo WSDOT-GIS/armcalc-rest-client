@@ -7,6 +7,8 @@ if (typeof window === "undefined") {
 
 describe("ArmCalc test", () => {
     let rootUrl = "http://webapps.wsdot.loc/StateRoute/LocationReferencingMethod/Transformation/ARMCalc/ArmCalcService.svc/REST";
+    // TODO: Remove this line once API is in production.
+    rootUrl = rootUrl.replace(/webapps/, "webappsqa");
     let calcSrmpUrl = `${rootUrl}/CalcSrmp?sr=005&arm=150&ref=20140819&resp=20140819`;
     let calcArmUrl = `${rootUrl}/CalcArm?sr=005&srmp=150&ref=20140819&resp=20140819`;
     let batchUrl = `${rootUrl}/CalcBatch`;
