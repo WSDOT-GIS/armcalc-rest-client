@@ -8,7 +8,7 @@ import { parseWcfDate, toWcfDateString } from "./wcfDateUtils";
 // Fetch is built-in to (modern) browser but Node requires module import.
 let fetch = typeof window !== "undefined" ? window.fetch : require("node-fetch");
 
-const defaultUrl = "http://webappsqa.wsdot.loc/StateRoute/LocationReferencingMethod/Transformation/ARMCalc/ArmCalcService.svc/REST";
+const defaultUrl = "http://webapps.wsdot.loc/StateRoute/LocationReferencingMethod/Transformation/ARMCalc/ArmCalcService.svc/REST";
 
 /**
  * Handles custom JSON parsing.
