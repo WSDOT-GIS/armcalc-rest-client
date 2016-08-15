@@ -1,6 +1,6 @@
 {
   "name": "armcalc-rest-client",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Client for WSDOT ARMCalc REST API",
   "main": "armcalc-client.js",
   "scripts": {
@@ -16,6 +16,16 @@
     "milepost"
   ],
   "author": "WSDOT",
+  "contributors": [
+    {
+      "name": "Jeff Jacobson",
+      "email": "JeffJacobson@users.noreply.github.com",
+      "url": "https://github.com/JeffJacobson"
+    }
+  ],
+  "engines": {
+    "node": ">=6.3.1"
+  },
   "license": "Unlicense",
   "devDependencies": {
     "jasmine": "^2.4.1",
@@ -25,5 +35,13 @@
   },
   "dependencies": {
     "node-fetch": "^1.6.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WSDOT-GIS/armcalc-rest-client.git"
+  },
+  "bugs": {
+    "url": "https://github.com/WSDOT-GIS/armcalc-rest-client/issues"
+  },
+  "homepage": "https://github.com/WSDOT-GIS/armcalc-rest-client#readme"
 }
