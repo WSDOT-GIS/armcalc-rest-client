@@ -6,6 +6,7 @@
         "sourceMap": false
     },
     "exclude": [
+        ".vscode",
         "node_modules",
         "spec"
     ]
