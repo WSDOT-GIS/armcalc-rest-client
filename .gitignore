@@ -1,5 +1,8 @@
 typings
-**/*.js
+armcalc-client.js
+wcfDateUtils.js
+spec/armcalc-*.js
+spec/fetchSpec.js
 
 # Logs
 logs
