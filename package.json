@@ -7,7 +7,8 @@
     "preinstall": "echo Getting typings… && typings install --production && echo Compiling TypeScript… && tsc --project tsconfigNoTest.json && echo done.",
     "build": "echo Getting typings… && typings install && tsc && echo done",
     "pretest": "npm run-script build",
-    "test": "jasmine spec/armcalc-clientSpec.js"
+    "test:live": "jasmine spec/armcalc-clientSpec.js",
+    "test": "jasmine spec/armcalc-clientSpec-fake.js"
   },
   "private": true,
   "keywords": [
