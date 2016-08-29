@@ -1,9 +1,9 @@
 {
   "globalDependencies": {
     "es2015-promise": "registry:env/es2015-promise#1.0.0+20160526151700",
-    "node": "registry:env/node#6.0.0+20160813135048",
+    "node": "registry:env/node#6.0.0+20160825160117",
     "node-fetch": "registry:dt/node-fetch#0.0.0+20160711094047",
-    "whatwg-fetch": "registry:dt/whatwg-fetch#0.0.0+20160728142841"
+    "whatwg-fetch": "registry:dt/whatwg-fetch#0.0.0+20160829180742"
   },
   "globalDevDependencies": {
     "jasmine": "registry:dt/jasmine#2.2.0+20160621224255"
