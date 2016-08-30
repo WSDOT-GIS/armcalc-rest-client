@@ -2,6 +2,7 @@
 {
     "files.exclude": {
         "**/*.js": { "when": "$(basename).ts" },
+        "es2015": true,
         "**/.git": true,
         "**/.svn": true,
         "**/.hg": true,
