@@ -15,8 +15,11 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
+      'node_modules/core-js/client/core.js',
       'wcfDateUtils.js',
-      'spec/**/*Spec.js'
+      'armcalc-client.js',
+      // 'spec/**/*Spec.js'
+      'spec/armcalc-clientSpec-fake.js'
     ],
 
 
@@ -56,12 +59,13 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome', 'Firefox', 'IE', 'PhantomJS'],
+    browsers: ['Chrome'],
+    // browsers: ['Chrome', 'Firefox', 'IE', 'PhantomJS'],
 
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: false,
+    singleRun: true,
 
     // Concurrency level
     // how many browser should be started simultaneous

@@ -9,7 +9,7 @@
     "build": "typings install && tsc && npm run build:babel",
     "pretest": "npm run-script build",
     "test:live": "jasmine spec/armcalc-clientSpec.js",
-    "test": "jasmine spec/armcalc-clientSpec-fake.js"
+    "test": "jasmine spec/armcalc-clientSpec-fake.js && karma start --browsers Firefox"
   },
   "private": true,
   "keywords": [
@@ -34,6 +34,7 @@
   "devDependencies": {
     "babel-cli": "^6.14.0",
     "babel-preset-es2015": "^6.14.0",
+    "core-js": "^2.4.1",
     "jasmine": "^2.4.1",
     "karma": "^1.2.0",
     "karma-chrome-launcher": "^2.0.0",

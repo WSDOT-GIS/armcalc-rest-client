@@ -4,9 +4,9 @@
  */
 
 import { parseWcfDate, toWcfDateString } from "./wcfDateUtils";
-import { polyfill } from "es6-promise";
-polyfill();
-import "isomorphic-fetch";
+if (typeof fetch === "undefined") {
+    require("isomorphic-fetch");
+}
 
 // Fetch is built-in to (modern) browser but Node requires module import.
 
