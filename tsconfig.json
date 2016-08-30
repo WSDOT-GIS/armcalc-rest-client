@@ -1,9 +1,10 @@
 {
     "compilerOptions": {
-        "module": "umd",
-        "target": "es5",
+        "module": "es2015",
+        "target": "es2015",
         "noImplicitAny": false,
-        "sourceMap": false
+        "sourceMap": false,
+        "outDir": "es2015"
     },
     "exclude": [
         "node_modules",

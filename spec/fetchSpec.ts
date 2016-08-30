@@ -1,9 +1,9 @@
 // Set appropriate fetch function for environment.
 // Old browsers must use polyfill.
 
-if (typeof window === "undefined") {
-    fetch = require("node-fetch");
-}
+import { polyfill } from "es6-promise";
+polyfill();
+import "isomorphic-fetch";
 
 describe("ArmCalc test", () => {
     let rootUrl = "http://webapps.wsdot.loc/StateRoute/LocationReferencingMethod/Transformation/ARMCalc/ArmCalcService.svc/REST";

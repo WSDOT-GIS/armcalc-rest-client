@@ -83,7 +83,7 @@ describe("ArmCalculator", () => {
                     "TransId": null,
                     "CalculationReturnCode": 0,
                     "CalculationReturnMessage": "",
-                    "RealignmentDate": new Date( 534067200000 - 0800 )
+                    "RealignmentDate": new Date( 534067200000 - 800 )
                 }
             ]);
         });
