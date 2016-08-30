@@ -15,11 +15,12 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
+      'node_modules/whatwg-fetch/fetch.js',
       'node_modules/core-js/client/core.js',
+      'node_modules/promise-polyfill/promise.min.js',
       'wcfDateUtils.js',
       'armcalc-client.js',
-      // 'spec/**/*Spec.js'
-      'spec/armcalc-clientSpec-fake.js'
+      'spec/**/*Spec.js' // Uncomment to test with actuall HTTP calls.
     ],
 
 
@@ -59,8 +60,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome'],
-    // browsers: ['Chrome', 'Firefox', 'IE', 'PhantomJS'],
+    browsers: ['Chrome', 'Firefox', 'IE', 'PhantomJS'],
 
 
     // Continuous Integration mode
