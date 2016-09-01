@@ -8,7 +8,7 @@ declare enum CalcTypes {
     ArmToSrmp = 1
 }
 
-// type ABIndicator = "A" | "B";
+declare type ABIndicator = "A" | "B" | null;
 
 /**
  * Defines an ARM Calc operation.
@@ -23,7 +23,7 @@ interface ArmCalcInput {
     /** Related Route Qualifier */
     RRQ?: string;
     /** Ahead / Back indicator for SRMP. "A" or null, or "B" */
-    ABIndicator?: string;
+    ABIndicator?: ABIndicator;
     /** Input data collection date */
     ReferenceDate: Date;
     /** Accumulated Route Mileage. Actual measure */

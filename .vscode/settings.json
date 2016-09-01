@@ -4,6 +4,10 @@
         "**/.git": true,
         "**/.svn": true,
         "**/.hg": true,
-        "**/.DS_Store": true
-    }
+        "**/.DS_Store": true,
+        "spec/*Spec*{js,d.ts}": true,
+        "armcalc-client.{js,d.ts}": true,
+        "wcfDateUtils.{js,d.ts}": true
+    },
+    "typescript.tsdk": "node_modules/typescript/lib"
 }
