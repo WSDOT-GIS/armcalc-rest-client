@@ -7,7 +7,26 @@ Client for calling the ArmCalc service REST endpoint.
 
 See `armcalc-clientSpec.ts` for examples.
 
-Install as NPM module
----------------------
+Install via NPM
+---------------
 
 `npm install github:wsdot-gis/armcalc-rest-client`
+
+For Developers
+--------------
+
+### Running Tests ###
+
+#### NPM ####
+
+##### Mock test #####
+
+    npm test
+
+##### Test using live web service (inside WSDOT only) #####
+
+    npm run test:live
+
+#### Browser (via Karma, inside WSDOT only) ####
+
+    npm run test:browser
