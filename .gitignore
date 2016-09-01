@@ -3,7 +3,6 @@ armcalc-client.js
 wcfDateUtils.js
 spec/armcalc-*.js
 spec/fetchSpec.js
-es2015
 
 # Logs
 logs
