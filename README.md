@@ -12,8 +12,12 @@ Install via NPM
 
 `npm install github:wsdot-gis/armcalc-rest-client`
 
+See `spec/armcalc-clientSpec.ts` for usage examples.
+
 For Developers
 --------------
+
+The recommended developmenet environment is [Visual Studio Code].
 
 ### Running Tests ###
 
@@ -30,3 +34,5 @@ For Developers
 #### Browser (via Karma, inside WSDOT only) ####
 
     npm run test:browser
+
+[Visual Studio Code]:http://code.visualstudio.com
