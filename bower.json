@@ -1,0 +1,29 @@
+{
+  "name": "armcalc-rest-client",
+  "description": "Client for WSDOT ARMCalc REST API",
+  "main": "armcalc-client.js",
+  "authors": [
+    "Jeff Jacobson (https://github.com/JeffJacobson)"
+  ],
+  "license": "Unlicense",
+  "moduleType": [
+    "amd",
+    "node"
+  ],
+  "keywords": [
+    "wsdot",
+    "armcalc",
+    "srmp",
+    "arm",
+    "milepost"
+  ],
+  "homepage": "https://github.com/WSDOT-GIS/armcalc-rest-client",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
