@@ -35,15 +35,21 @@ function replacer(k: string, v: any) {
 }
 
 /**
+ * Converts a number to string and pads with leading zero.
+ */
+function padNumber(n: number, len: number = 2): string {
+    let s = n.toString();
+    while (s.length < len) {
+        s = "0" + s;
+    }
+    return s;
+}
+
+/**
  * Converts a date into YYYYMMDD format.
  */
 function dateToSearchFormat(date: Date): string {
-    let dateFmt = new Intl.NumberFormat("en-us", {
-        minimumIntegerDigits: 2,
-    });
-    return [date.getFullYear(), date.getMonth() + 1, date.getDate()].map(n => {
-        return dateFmt.format(n);
-    }).join("");
+    return [date.getFullYear(), padNumber(date.getMonth() + 1), padNumber(date.getDate())].join("");
 }
 
 /**
@@ -66,7 +72,7 @@ function toSearch(input: ArmCalcInput): string {
             } else if (value instanceof Date) {
                 value = dateToSearchFormat(value);
             }
-            outputParts.push(`${encodeURIComponent(key)}=${encodeURIComponent(value)}`);
+            outputParts.push(`${encodeURIComponent(defs[key] || key.toLowerCase())}=${encodeURIComponent(value)}`);
         }
     }
     return outputParts.join("&");

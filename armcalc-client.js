@@ -40,15 +40,21 @@
         }
     }
     /**
+     * Converts a number to string and pads with leading zero.
+     */
+    function padNumber(n, len) {
+        if (len === void 0) { len = 2; }
+        var s = n.toString();
+        while (s.length < len) {
+            s = "0" + s;
+        }
+        return s;
+    }
+    /**
      * Converts a date into YYYYMMDD format.
      */
     function dateToSearchFormat(date) {
-        var dateFmt = new Intl.NumberFormat("en-us", {
-            minimumIntegerDigits: 2,
-        });
-        return [date.getFullYear(), date.getMonth() + 1, date.getDate()].map(function (n) {
-            return dateFmt.format(n);
-        }).join("");
+        return [date.getFullYear(), padNumber(date.getMonth() + 1), padNumber(date.getDate())].join("");
     }
     /**
      * Converts an object into an URL search query string.
@@ -71,7 +77,7 @@
                 else if (value instanceof Date) {
                     value = dateToSearchFormat(value);
                 }
-                outputParts.push(encodeURIComponent(key) + "=" + encodeURIComponent(value));
+                outputParts.push(encodeURIComponent(defs[key] || key.toLowerCase()) + "=" + encodeURIComponent(value));
             }
         }
         return outputParts.join("&");

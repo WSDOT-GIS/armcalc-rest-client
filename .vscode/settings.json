@@ -1,13 +1,13 @@
 // Place your settings in this file to overwrite default and user settings.
 {
     "files.exclude": {
+        "spec/*Spec*{js,d.ts}": true,
+        "armcalc-client.{js,d.ts}": true,
+        "wcfDateUtils.{js,d.ts}": true,
         "**/.git": true,
         "**/.svn": true,
         "**/.hg": true,
-        "**/.DS_Store": true,
-        "spec/*Spec*{js,d.ts}": true,
-        "armcalc-client.{js,d.ts}": true,
-        "wcfDateUtils.{js,d.ts}": true
+        "**/.DS_Store": true
     },
     "typescript.tsdk": "node_modules/typescript/lib"
 }
