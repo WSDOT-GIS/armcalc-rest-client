@@ -10,6 +10,19 @@ let fetch = typeof window !== "undefined" ? window.fetch : require("node-fetch")
 
 const defaultUrl = "http://webapps.wsdot.loc/StateRoute/LocationReferencingMethod/Transformation/ARMCalc/ArmCalcService.svc/REST";
 
+
+function yyyymmddToDate(yyyymmdd: string): Date {
+    let re = /^(\d{4})(\d{2})(\d{2})$/;
+    let match = yyyymmdd.match(re);
+    if (!match) {
+        throw new Error("Invalid format");
+    }
+    let parts = match.splice(1).map(s => {
+        return parseInt(s, 10);
+    });
+    return new Date(parts[0], parts[1], parts[2]);
+}
+
 /**
  * Handles custom JSON parsing.
  */
@@ -101,7 +114,27 @@ export default class ArmCalculator {
         return fetch(getUrl).then(response => {
             return response.text();
         }).then(txt => {
-            return JSON.parse(txt, reviver);
+            let output = JSON.parse(txt, reviver);
+            // convert "...YYYYMMDD" fields to "...Date" fields.
+
+            let re = /^(\w+)YYYYMMDD$/;
+
+            // Get the fields that have dates as strings.
+            let dateStringFields: string[] = [];
+            for (let key in output) {
+                let match = key.match(re);
+                if (match) {
+                    dateStringFields.push(key);
+                }
+            }
+
+            for (let key of dateStringFields) {
+                let match = key.match(re);
+                output[match[1] + "Date"] = yyyymmddToDate(output[key]);
+                delete output[key];
+            }
+
+            return output;
         });
     }
     /**

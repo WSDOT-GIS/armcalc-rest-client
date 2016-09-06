@@ -15,6 +15,17 @@
     // Fetch is built-in to (modern) browser but Node requires module import.
     var fetch = typeof window !== "undefined" ? window.fetch : require("node-fetch");
     var defaultUrl = "http://webapps.wsdot.loc/StateRoute/LocationReferencingMethod/Transformation/ARMCalc/ArmCalcService.svc/REST";
+    function yyyymmddToDate(yyyymmdd) {
+        var re = /^(\d{4})(\d{2})(\d{2})$/;
+        var match = yyyymmdd.match(re);
+        if (!match) {
+            throw new Error("Invalid format");
+        }
+        var parts = match.splice(1).map(function (s) {
+            return parseInt(s, 10);
+        });
+        return new Date(parts[0], parts[1], parts[2]);
+    }
     /**
      * Handles custom JSON parsing.
      */
@@ -106,7 +117,24 @@
             return fetch(getUrl).then(function (response) {
                 return response.text();
             }).then(function (txt) {
-                return JSON.parse(txt, reviver);
+                var output = JSON.parse(txt, reviver);
+                // convert "...YYYYMMDD" fields to "...Date" fields.
+                var re = /^(\w+)YYYYMMDD$/;
+                // Get the fields that have dates as strings.
+                var dateStringFields = [];
+                for (var key in output) {
+                    var match = key.match(re);
+                    if (match) {
+                        dateStringFields.push(key);
+                    }
+                }
+                for (var _i = 0, dateStringFields_1 = dateStringFields; _i < dateStringFields_1.length; _i++) {
+                    var key = dateStringFields_1[_i];
+                    var match = key.match(re);
+                    output[match[1] + "Date"] = yyyymmddToDate(output[key]);
+                    delete output[key];
+                }
+                return output;
             });
         };
         /**
