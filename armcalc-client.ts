@@ -29,6 +29,8 @@ function yyyymmddToDate(yyyymmdd: string): Date {
 function reviver(k: string, v: any) {
     if (/Date$/.test(k) && typeof v === "string") {
         return parseWcfDate(v);
+    } else if (v === "") {
+        return null;
     } else {
         return v;
     }
@@ -117,6 +119,8 @@ export default class ArmCalculator {
             let output = JSON.parse(txt, reviver);
             // convert "...YYYYMMDD" fields to "...Date" fields.
 
+            output.CalcType = type === "Srmp" ? 1 : 0;
+
             let re = /^(\w+)YYYYMMDD$/;
 
             // Get the fields that have dates as strings.
@@ -132,6 +136,17 @@ export default class ArmCalculator {
                 let match = key.match(re);
                 output[match[1] + "Date"] = yyyymmddToDate(output[key]);
                 delete output[key];
+            }
+
+            // Fix casing on "ABindicator" property name.
+            if (output.hasOwnProperty("ABindicator")) {
+                output.ABIndicator = output.ABindicator;
+                delete output.ABindicator;
+            }
+
+            if (output.StateRoute) {
+                output.SR = output.StateRoute;
+                delete output.StateRoute;
             }
 
             return output;

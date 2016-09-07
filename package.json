@@ -1,6 +1,6 @@
 {
   "name": "armcalc-rest-client",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "description": "Client for WSDOT ARMCalc REST API",
   "main": "armcalc-client.js",
   "typings": "armcalc-client.d.ts",
@@ -37,6 +37,7 @@
   },
   "license": "Unlicense",
   "devDependencies": {
+    "@types/es6-collections": "0.0.28",
     "@types/jasmine": "^2.2.33",
     "@types/nock": "^0.54.31",
     "jasmine": "^2.5.0",

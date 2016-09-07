@@ -14,6 +14,32 @@ let dateCompareEquality: jasmine.CustomEqualityTester = function (first, second)
     }
 };
 
+function hasCorrectProperties(testObject: any) {
+    let isDate = o => o instanceof Date;
+    let isNumber = o => typeof o === "number";
+    let isString = o => typeof o === "string";
+    let isNullableString = o => o === null || isString(o);
+    let map = new Map<string, (o: any) => boolean>(
+    [
+        ["CalcType", isNumber],
+        ["SR", isString],
+        ["RRT", isNullableString],
+        ["RRQ", isNullableString],
+        ["ABIndicator", isNullableString],
+        ["ReferenceDate", isDate ],
+        ["ARM", isNumber],
+        ["SRMP", isNumber],
+        ["ResponseDate", isDate ],
+        ["CalculationReturnCode", isNumber],
+        ["CalculationReturnMessage", isNullableString],
+        ["RealignmentDate", isDate ]
+    ]);
+
+    map.forEach((tester, key) => {
+        expect(tester(testObject[key])).toEqual(true, `Unexpected type in ${key}: ${testObject[key]}.`);
+    });
+}
+
 describe("ArmCalculator", () => {
 
     let ac = new ArmCalculator();
@@ -33,6 +59,7 @@ describe("ArmCalculator", () => {
         promise.then(acOut => {
             expect(typeof acOut).toEqual("object");
             expect(acOut.CalculationReturnCode).toEqual(0);
+            hasCorrectProperties(acOut);
             done();
         });
         promise.catch(error => {
@@ -53,6 +80,7 @@ describe("ArmCalculator", () => {
         promise.then(acOut => {
             expect(typeof acOut).toEqual("object");
             expect(acOut.CalculationReturnCode).toEqual(0);
+            hasCorrectProperties(acOut);
             done();
         });
         promise.catch(error => {
@@ -93,6 +121,7 @@ describe("ArmCalculator", () => {
             expect(Array.isArray(acOuts)).toBe(true);
             expect(acOuts.length).toEqual(batchInput.length);
             acOuts.forEach((acOut, i) => {
+                hasCorrectProperties(acOut);
                 expect(acOut.CalculationReturnCode).toEqual(0);
                 let acIn = batchInput[i];
                 // Names of properties that should be equal in both input and output.
@@ -104,8 +133,11 @@ describe("ArmCalculator", () => {
                         // Test to see that input and output dates are near each other.
                         // We only care about the YYYY-MM-DD portion, not the time.
                         expect((inVal as Date).getDate()).toBeCloseTo((outVal as Date).getDate());
+                    } else if (inVal === "") {
+                        // Empty strings will be converted to null.
+                        expect(outVal).toBeNull();
                     } else {
-                        expect(inVal).toEqual(outVal);
+                        expect(inVal).toEqual(outVal, `Expected ${propName} to be ${inVal}, not ${outVal}`);
                     }
                 }
             });

@@ -33,6 +33,9 @@
         if (/Date$/.test(k) && typeof v === "string") {
             return wcfDateUtils_1.parseWcfDate(v);
         }
+        else if (v === "") {
+            return null;
+        }
         else {
             return v;
         }
@@ -119,6 +122,7 @@
             }).then(function (txt) {
                 var output = JSON.parse(txt, reviver);
                 // convert "...YYYYMMDD" fields to "...Date" fields.
+                output.CalcType = type === "Srmp" ? 1 : 0;
                 var re = /^(\w+)YYYYMMDD$/;
                 // Get the fields that have dates as strings.
                 var dateStringFields = [];
@@ -133,6 +137,15 @@
                     var match = key.match(re);
                     output[match[1] + "Date"] = yyyymmddToDate(output[key]);
                     delete output[key];
+                }
+                // Fix casing on "ABindicator" property name.
+                if (output.hasOwnProperty("ABindicator")) {
+                    output.ABIndicator = output.ABindicator;
+                    delete output.ABindicator;
+                }
+                if (output.StateRoute) {
+                    output.SR = output.StateRoute;
+                    delete output.StateRoute;
                 }
                 return output;
             });
