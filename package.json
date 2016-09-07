@@ -5,12 +5,10 @@
   "main": "armcalc-client.js",
   "typings": "armcalc-client.d.ts",
   "scripts": {
-    "prepublish": "tsc --project tsconfigNoTest.json",
-    "build": "tsc",
-    "pretest": "npm run-script build",
-    "test:live": "npm run pretest && jasmine spec/armcalc-clientSpec.js",
-    "test:browser": "npm run pretest && karma start",
-    "test": "jasmine spec/armcalc-clientSpec-fake.js"
+    "prepublish": "tsc",
+    "pretest": "tsc",
+    "test": "jasmine",
+    "test:browser": "npm run pretest && karma start"
   },
   "files": [
     "armcalc-client.d.ts",

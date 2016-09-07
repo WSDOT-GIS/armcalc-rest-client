@@ -1,6 +1,8 @@
 import ArmCalculator from "../armcalc-client";
 
 // Install nock when not using a browser.
+// Nock will intercept web requests and return a mock ResponseDate
+// so that it is not necessary to actually contact the web service.
 let nock;
 if (typeof window === "undefined") {
     nock = require("nock");
@@ -14,11 +16,18 @@ let dateCompareEquality: jasmine.CustomEqualityTester = function (first, second)
     }
 };
 
+/**
+ * Tests the ArmCalcOutput objects to ensure they have the correct
+ * properties by running "expect" tests on them.
+ */
 function hasCorrectProperties(testObject: any) {
+    // Define test functions.
     let isDate = o => o instanceof Date;
     let isNumber = o => typeof o === "number";
     let isString = o => typeof o === "string";
     let isNullableString = o => o === null || isString(o);
+
+    // Create a mapping of property names to test functions.
     let map = new Map<string, (o: any) => boolean>(
     [
         ["CalcType", isNumber],
@@ -35,6 +44,8 @@ function hasCorrectProperties(testObject: any) {
         ["RealignmentDate", isDate ]
     ]);
 
+    // Test the object to make sure it has each of the required properties
+    // and that the property is of the correct type.
     map.forEach((tester, key) => {
         expect(tester(testObject[key])).toEqual(true, `Unexpected type in ${key}: ${testObject[key]}.`);
     });

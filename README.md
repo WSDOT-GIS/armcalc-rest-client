@@ -10,7 +10,12 @@ See `armcalc-clientSpec.ts` for examples.
 Install via NPM
 ---------------
 
-`npm install github:wsdot-gis/armcalc-rest-client`
+`npm install --save github:wsdot-gis/armcalc-rest-client`
+
+Install via Bower
+-----------------
+
+`bower install --save wsdot-gis/armcalc-rest-client`
 
 See `spec/armcalc-clientSpec.ts` for usage examples.
 
@@ -23,13 +28,9 @@ The recommended developmenet environment is [Visual Studio Code].
 
 #### NPM ####
 
-##### Mock test #####
+##### Test using Jasmine #####
 
     npm test
-
-##### Test using live web service (inside WSDOT only) #####
-
-    npm run test:live
 
 #### Browser (via Karma, inside WSDOT only) ####
 

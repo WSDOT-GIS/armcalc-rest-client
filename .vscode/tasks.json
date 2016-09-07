@@ -9,11 +9,13 @@
     "tasks": [
         {
             "taskName": "build",
+            "isBuildCommand": true,
             "args": ["run", "prepublish"]
         },
         {
             "taskName": "test",
-            "args": ["run", "test"]
+            "isTestCommand": true,
+            "suppressTaskName": false
         }
     ]
 }

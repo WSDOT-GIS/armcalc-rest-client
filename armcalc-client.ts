@@ -11,6 +11,11 @@ let fetch = typeof window !== "undefined" ? window.fetch : require("node-fetch")
 const defaultUrl = "http://webapps.wsdot.loc/StateRoute/LocationReferencingMethod/Transformation/ARMCalc/ArmCalcService.svc/REST";
 
 
+/**
+ * Parses YYYYMMDD string into a date
+ * @param {string} yyyymmdd - date string
+ * @returns {Date} parsed date
+ */
 function yyyymmddToDate(yyyymmdd: string): Date {
     let re = /^(\d{4})(\d{2})(\d{2})$/;
     let match = yyyymmdd.match(re);

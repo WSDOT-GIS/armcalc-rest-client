@@ -15,6 +15,11 @@
     // Fetch is built-in to (modern) browser but Node requires module import.
     var fetch = typeof window !== "undefined" ? window.fetch : require("node-fetch");
     var defaultUrl = "http://webapps.wsdot.loc/StateRoute/LocationReferencingMethod/Transformation/ARMCalc/ArmCalcService.svc/REST";
+    /**
+     * Parses YYYYMMDD string into a date
+     * @param {string} yyyymmdd - date string
+     * @returns {Date} parsed date
+     */
     function yyyymmddToDate(yyyymmdd) {
         var re = /^(\d{4})(\d{2})(\d{2})$/;
         var match = yyyymmdd.match(re);
