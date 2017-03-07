@@ -1,3 +1,4 @@
+import { ArmCalcInput, ArmCalcOutput } from "./Messages";
 /**
  * Class that calls web service to perform ARM <=> SRMP calculations.
  */

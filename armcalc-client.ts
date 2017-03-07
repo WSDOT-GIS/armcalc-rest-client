@@ -5,11 +5,12 @@
 
 import { parseWcfDate, toWcfDateString } from "./wcfDateUtils";
 
+import { ArmCalcInput, ArmCalcOutput } from "./Messages";
+
 // Fetch is built-in to (modern) browser but Node requires module import.
 let fetch = typeof window !== "undefined" ? window.fetch : require("node-fetch");
 
 const defaultUrl = "http://webapps.wsdot.loc/StateRoute/LocationReferencingMethod/Transformation/ARMCalc/ArmCalcService.svc/REST";
-
 
 /**
  * Parses YYYYMMDD string into a date

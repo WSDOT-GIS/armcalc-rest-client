@@ -1,19 +1,19 @@
 /**
  * Valid calculation types.
  */
-declare enum CalcTypes {
+export declare enum CalcTypes {
     /** SRMP to ARM */
     SrmpToArm = 0,
     /** ARM to SRMP */
     ArmToSrmp = 1
 }
 
-declare type ABIndicator = "A" | "B" | null;
+export declare type ABIndicator = "A" | "B" | null;
 
 /**
  * Defines an ARM Calc operation.
  */
-interface ArmCalcInput {
+export interface ArmCalcInput {
     /** Calculation Type. 0 = SRMP to ARM, 1 = ARM to SRMP */
     CalcType?: CalcTypes;
     /** Three digit state route ID. */
@@ -39,7 +39,7 @@ interface ArmCalcInput {
 /**
  * ArmCalc output.
  */
-interface ArmCalcOutput extends ArmCalcInput {
+export interface ArmCalcOutput extends ArmCalcInput {
     /** Calculation return code. */
     CalculationReturnCode: number;
     /** Calulation return message. Will not have value if return code is 0. */
