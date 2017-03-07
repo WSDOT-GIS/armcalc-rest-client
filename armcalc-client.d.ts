@@ -1,4 +1,3 @@
-/// <reference types="es6-promise" />
 /**
  * Class that calls web service to perform ARM <=> SRMP calculations.
  */

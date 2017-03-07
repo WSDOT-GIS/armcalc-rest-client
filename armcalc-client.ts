@@ -77,16 +77,18 @@ function dateToSearchFormat(date: Date): string {
  */
 function toSearch(input: ArmCalcInput): string {
     let outputParts: string[] = [];
-    let defs = {
-        ReferenceDate: "ref",
-        ResponseDate: "resp"
-    };
+    let defs: {
+        [key: string]: string;
+    } = {
+            ReferenceDate: "ref",
+            ResponseDate: "resp"
+        };
     for (let key in input) {
         if (key === "CalcType") {
             continue;
         }
         if (input.hasOwnProperty(key)) {
-            let value = input[key];
+            let value = (input as any)[key];
             if (value === undefined || value === null || value === "") {
                 continue;
             } else if (value instanceof Date) {
@@ -115,54 +117,54 @@ export default class ArmCalculator {
      * @param {string} type - The type of output measure type: "Srmp" or "Arm".
      * @return {Promise.<ArmCalcOutput>}
      */
-    private performCalcGet(input: ArmCalcInput, type: "Srmp" | "Arm"): Promise<ArmCalcOutput> {
+    private async performCalcGet(input: ArmCalcInput, type: "Srmp" | "Arm"): Promise<ArmCalcOutput> {
         let search = toSearch(input);
         let getUrl = `${this.url}/Calc${type}?${search}`;
-        return fetch(getUrl).then(response => {
-            return response.text();
-        }).then(txt => {
-            let output = JSON.parse(txt, reviver);
-            // convert "...YYYYMMDD" fields to "...Date" fields.
+        let response: Response = await fetch(getUrl);
+        let txt = await response.text();
+        let output = JSON.parse(txt, reviver);
+        // convert "...YYYYMMDD" fields to "...Date" fields.
 
-            output.CalcType = type === "Srmp" ? 1 : 0;
+        output.CalcType = type === "Srmp" ? 1 : 0;
 
-            let re = /^(\w+)YYYYMMDD$/;
+        let re = /^(\w+)YYYYMMDD$/;
 
-            // Get the fields that have dates as strings.
-            let dateStringFields: string[] = [];
-            for (let key in output) {
-                let match = key.match(re);
-                if (match) {
-                    dateStringFields.push(key);
-                }
+        // Get the fields that have dates as strings.
+        let dateStringFields: string[] = [];
+        for (let key in output) {
+            let match = key.match(re);
+            if (match) {
+                dateStringFields.push(key);
             }
+        }
 
-            for (let key of dateStringFields) {
-                let match = key.match(re);
+        for (let key of dateStringFields) {
+            let match = key.match(re);
+            if (match) {
                 output[match[1] + "Date"] = yyyymmddToDate(output[key]);
                 delete output[key];
             }
+        }
 
-            // Fix casing on "ABindicator" property name.
-            if (output.hasOwnProperty("ABindicator")) {
-                output.ABIndicator = output.ABindicator;
-                delete output.ABindicator;
-            }
+        // Fix casing on "ABindicator" property name.
+        if (output.hasOwnProperty("ABindicator")) {
+            output.ABIndicator = output.ABindicator;
+            delete output.ABindicator;
+        }
 
-            if (output.StateRoute) {
-                output.SR = output.StateRoute;
-                delete output.StateRoute;
-            }
+        if (output.StateRoute) {
+            output.SR = output.StateRoute;
+            delete output.StateRoute;
+        }
 
-            return output;
-        });
+        return output;
     }
     /**
      * Converts a value from ARM to SRMP.
      * @param {ArmCalcInput} input - Input parameters.
      * @return {Promise.<ArmCalcOutput>}
      */
-    calcSrmp(input: ArmCalcInput): Promise<ArmCalcOutput> {
+    async calcSrmp(input: ArmCalcInput): Promise<ArmCalcOutput> {
         return this.performCalcGet(input, "Srmp");
     }
     /**
@@ -170,7 +172,7 @@ export default class ArmCalculator {
      * @param {ArmCalcInput} input - Input parameters.
      * @return {Promise.<ArmCalcOutput>}
      */
-    calcArm(input: ArmCalcInput): Promise<ArmCalcOutput> {
+    async calcArm(input: ArmCalcInput): Promise<ArmCalcOutput> {
         return this.performCalcGet(input, "Arm");
     }
     /**
@@ -178,7 +180,7 @@ export default class ArmCalculator {
      * @param {ArmCalcInput[]} inputs - input parameters
      * @return {Promise.<ArmCalcOutput>}
      */
-    calcBatch(inputs: ArmCalcInput[]): Promise<ArmCalcOutput[]> {
+    async calcBatch(inputs: ArmCalcInput[]): Promise<ArmCalcOutput[]> {
         let json = JSON.stringify(inputs, replacer);
         let batchUrl = `${this.url}/CalcBatch`;
         let batchHeaders: any;
@@ -192,14 +194,13 @@ export default class ArmCalculator {
                 "Content-Type": "application/json"
             };
         }
-        return fetch(batchUrl, {
+
+        let response: Response = await fetch(batchUrl, {
             method: "POST",
             headers: batchHeaders,
             body: json
-        }).then(response => {
-            return response.text();
-        }).then(txt => {
-            return JSON.parse(txt, reviver);
         });
+        let txt = await response.text();
+        return JSON.parse(txt, reviver);
     }
 }
