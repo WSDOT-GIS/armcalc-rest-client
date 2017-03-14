@@ -13,7 +13,7 @@ export declare type ABIndicator = "A" | "B" | null;
 /**
  * Defines an ARM Calc operation.
  */
-export interface ArmCalcInput {
+export interface IArmCalcInput {
     /** Calculation Type. 0 = SRMP to ARM, 1 = ARM to SRMP */
     CalcType?: CalcTypes;
     /** Three digit state route ID. */
@@ -39,7 +39,7 @@ export interface ArmCalcInput {
 /**
  * ArmCalc output.
  */
-export interface ArmCalcOutput extends ArmCalcInput {
+export interface IArmCalcOutput extends IArmCalcInput {
     /** Calculation return code. */
     CalculationReturnCode: number;
     /** Calulation return message. Will not have value if return code is 0. */

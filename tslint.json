@@ -1,6 +1,9 @@
 {
     "extends": "tslint:recommended",
     "rules": {
+        "max-line-length": [
+            200
+        ],
         "trailing-comma": [
             true, {
                 "singleline": "never",

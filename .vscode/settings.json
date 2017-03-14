@@ -9,5 +9,6 @@
         "**/.hg": true,
         "**/.DS_Store": true
     },
+    "tslint.ignoreDefinitionFiles": false,
     "typescript.tsdk": "node_modules/typescript/lib"
 }

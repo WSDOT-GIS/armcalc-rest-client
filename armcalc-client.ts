@@ -5,9 +5,10 @@
 
 import { parseWcfDate, toWcfDateString } from "./wcfDateUtils";
 
-import { ArmCalcInput, ArmCalcOutput } from "./Messages";
+import { IArmCalcInput, IArmCalcOutput } from "./Messages";
 
 // Fetch is built-in to (modern) browser but Node requires module import.
+// tslint:disable-next-line:no-var-requires
 let fetch = typeof window !== "undefined" ? window.fetch : require("node-fetch");
 
 const defaultUrl = "http://webapps.wsdot.loc/StateRoute/LocationReferencingMethod/Transformation/ARMCalc/ArmCalcService.svc/REST";
@@ -23,9 +24,7 @@ function yyyymmddToDate(yyyymmdd: string): Date {
     if (!match) {
         throw new Error("Invalid format");
     }
-    let parts = match.splice(1).map(s => {
-        return parseInt(s, 10);
-    });
+    let parts = match.splice(1).map((s) => parseInt(s, 10));
     return new Date(parts[0], parts[1], parts[2]);
 }
 
@@ -76,7 +75,7 @@ function dateToSearchFormat(date: Date): string {
 /**
  * Converts an object into an URL search query string.
  */
-function toSearch(input: ArmCalcInput): string {
+function toSearch(input: IArmCalcInput): string {
     let outputParts: string[] = [];
     let defs: {
         [key: string]: string;
@@ -118,7 +117,54 @@ export default class ArmCalculator {
      * @param {string} type - The type of output measure type: "Srmp" or "Arm".
      * @return {Promise.<ArmCalcOutput>}
      */
-    private async performCalcGet(input: ArmCalcInput, type: "Srmp" | "Arm"): Promise<ArmCalcOutput> {
+
+    /**
+     * Converts a value from ARM to SRMP.
+     * @param {ArmCalcInput} input - Input parameters.
+     * @return {Promise.<ArmCalcOutput>}
+     */
+    public async calcSrmp(input: IArmCalcInput): Promise<IArmCalcOutput> {
+        return this.performCalcGet(input, "Srmp");
+    }
+    /**
+     * Converts a value from SRMP to ARM.
+     * @param {ArmCalcInput} input - Input parameters.
+     * @return {Promise.<ArmCalcOutput>}
+     */
+    public async calcArm(input: IArmCalcInput): Promise<IArmCalcOutput> {
+        return this.performCalcGet(input, "Arm");
+    }
+    /**
+     * Perform multiple HTTP requests with one web service request.
+     * @param {ArmCalcInput[]} inputs - input parameters
+     * @return {Promise.<ArmCalcOutput>}
+     */
+    public async calcBatch(inputs: IArmCalcInput[]): Promise<IArmCalcOutput[]> {
+        let json = JSON.stringify(inputs, replacer);
+        let batchUrl = `${this.url}/CalcBatch`;
+        let batchHeaders: any;
+        if (typeof Headers !== "undefined") {
+            // browser
+            batchHeaders = new Headers();
+            batchHeaders.append("Content-Type", "application/json");
+        } else {
+            // Node.js
+            batchHeaders = {
+                "Content-Type": "application/json"
+            };
+        }
+
+        let response: Response = await fetch(batchUrl, {
+            method: "POST",
+            // tslint:disable-next-line:object-literal-sort-keys
+            headers: batchHeaders,
+            body: json
+        });
+        let txt = await response.text();
+        return JSON.parse(txt, reviver);
+    }
+
+        private async performCalcGet(input: IArmCalcInput, type: "Srmp" | "Arm"): Promise<IArmCalcOutput> {
         let search = toSearch(input);
         let getUrl = `${this.url}/Calc${type}?${search}`;
         let response: Response = await fetch(getUrl);
@@ -133,9 +179,11 @@ export default class ArmCalculator {
         // Get the fields that have dates as strings.
         let dateStringFields: string[] = [];
         for (let key in output) {
-            let match = key.match(re);
-            if (match) {
-                dateStringFields.push(key);
+            if (key in output) {
+                let match = key.match(re);
+                if (match) {
+                    dateStringFields.push(key);
+                }
             }
         }
 
@@ -159,49 +207,5 @@ export default class ArmCalculator {
         }
 
         return output;
-    }
-    /**
-     * Converts a value from ARM to SRMP.
-     * @param {ArmCalcInput} input - Input parameters.
-     * @return {Promise.<ArmCalcOutput>}
-     */
-    async calcSrmp(input: ArmCalcInput): Promise<ArmCalcOutput> {
-        return this.performCalcGet(input, "Srmp");
-    }
-    /**
-     * Converts a value from SRMP to ARM.
-     * @param {ArmCalcInput} input - Input parameters.
-     * @return {Promise.<ArmCalcOutput>}
-     */
-    async calcArm(input: ArmCalcInput): Promise<ArmCalcOutput> {
-        return this.performCalcGet(input, "Arm");
-    }
-    /**
-     * Perform multiple HTTP requests with one web service request.
-     * @param {ArmCalcInput[]} inputs - input parameters
-     * @return {Promise.<ArmCalcOutput>}
-     */
-    async calcBatch(inputs: ArmCalcInput[]): Promise<ArmCalcOutput[]> {
-        let json = JSON.stringify(inputs, replacer);
-        let batchUrl = `${this.url}/CalcBatch`;
-        let batchHeaders: any;
-        if (typeof Headers !== "undefined") {
-            // browser
-            batchHeaders = new Headers();
-            batchHeaders.append("Content-Type", "application/json");
-        } else {
-            // Node.js
-            batchHeaders = {
-                "Content-Type": "application/json"
-            };
-        }
-
-        let response: Response = await fetch(batchUrl, {
-            method: "POST",
-            headers: batchHeaders,
-            body: json
-        });
-        let txt = await response.text();
-        return JSON.parse(txt, reviver);
     }
 }

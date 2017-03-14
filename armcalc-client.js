@@ -50,6 +50,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     Object.defineProperty(exports, "__esModule", { value: true });
     var wcfDateUtils_1 = require("./wcfDateUtils");
     // Fetch is built-in to (modern) browser but Node requires module import.
+    // tslint:disable-next-line:no-var-requires
     var fetch = typeof window !== "undefined" ? window.fetch : require("node-fetch");
     var defaultUrl = "http://webapps.wsdot.loc/StateRoute/LocationReferencingMethod/Transformation/ARMCalc/ArmCalcService.svc/REST";
     /**
@@ -63,9 +64,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (!match) {
             throw new Error("Invalid format");
         }
-        var parts = match.splice(1).map(function (s) {
-            return parseInt(s, 10);
-        });
+        var parts = match.splice(1).map(function (s) { return parseInt(s, 10); });
         return new Date(parts[0], parts[1], parts[2]);
     }
     /**
@@ -156,53 +155,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
          * @param {string} type - The type of output measure type: "Srmp" or "Arm".
          * @return {Promise.<ArmCalcOutput>}
          */
-        ArmCalculator.prototype.performCalcGet = function (input, type) {
-            return __awaiter(this, void 0, void 0, function () {
-                var search, getUrl, response, txt, output, re, dateStringFields, key, match, _i, dateStringFields_1, key, match;
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0:
-                            search = toSearch(input);
-                            getUrl = this.url + "/Calc" + type + "?" + search;
-                            return [4 /*yield*/, fetch(getUrl)];
-                        case 1:
-                            response = _a.sent();
-                            return [4 /*yield*/, response.text()];
-                        case 2:
-                            txt = _a.sent();
-                            output = JSON.parse(txt, reviver);
-                            // convert "...YYYYMMDD" fields to "...Date" fields.
-                            output.CalcType = type === "Srmp" ? 1 : 0;
-                            re = /^(\w+)YYYYMMDD$/;
-                            dateStringFields = [];
-                            for (key in output) {
-                                match = key.match(re);
-                                if (match) {
-                                    dateStringFields.push(key);
-                                }
-                            }
-                            for (_i = 0, dateStringFields_1 = dateStringFields; _i < dateStringFields_1.length; _i++) {
-                                key = dateStringFields_1[_i];
-                                match = key.match(re);
-                                if (match) {
-                                    output[match[1] + "Date"] = yyyymmddToDate(output[key]);
-                                    delete output[key];
-                                }
-                            }
-                            // Fix casing on "ABindicator" property name.
-                            if (output.hasOwnProperty("ABindicator")) {
-                                output.ABIndicator = output.ABindicator;
-                                delete output.ABindicator;
-                            }
-                            if (output.StateRoute) {
-                                output.SR = output.StateRoute;
-                                delete output.StateRoute;
-                            }
-                            return [2 /*return*/, output];
-                    }
-                });
-            });
-        };
         /**
          * Converts a value from ARM to SRMP.
          * @param {ArmCalcInput} input - Input parameters.
@@ -253,6 +205,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
                             }
                             return [4 /*yield*/, fetch(batchUrl, {
                                     method: "POST",
+                                    // tslint:disable-next-line:object-literal-sort-keys
                                     headers: batchHeaders,
                                     body: json
                                 })];
@@ -262,6 +215,55 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
                         case 2:
                             txt = _a.sent();
                             return [2 /*return*/, JSON.parse(txt, reviver)];
+                    }
+                });
+            });
+        };
+        ArmCalculator.prototype.performCalcGet = function (input, type) {
+            return __awaiter(this, void 0, void 0, function () {
+                var search, getUrl, response, txt, output, re, dateStringFields, key, match, _i, dateStringFields_1, key, match;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0:
+                            search = toSearch(input);
+                            getUrl = this.url + "/Calc" + type + "?" + search;
+                            return [4 /*yield*/, fetch(getUrl)];
+                        case 1:
+                            response = _a.sent();
+                            return [4 /*yield*/, response.text()];
+                        case 2:
+                            txt = _a.sent();
+                            output = JSON.parse(txt, reviver);
+                            // convert "...YYYYMMDD" fields to "...Date" fields.
+                            output.CalcType = type === "Srmp" ? 1 : 0;
+                            re = /^(\w+)YYYYMMDD$/;
+                            dateStringFields = [];
+                            for (key in output) {
+                                if (key in output) {
+                                    match = key.match(re);
+                                    if (match) {
+                                        dateStringFields.push(key);
+                                    }
+                                }
+                            }
+                            for (_i = 0, dateStringFields_1 = dateStringFields; _i < dateStringFields_1.length; _i++) {
+                                key = dateStringFields_1[_i];
+                                match = key.match(re);
+                                if (match) {
+                                    output[match[1] + "Date"] = yyyymmddToDate(output[key]);
+                                    delete output[key];
+                                }
+                            }
+                            // Fix casing on "ABindicator" property name.
+                            if (output.hasOwnProperty("ABindicator")) {
+                                output.ABIndicator = output.ABindicator;
+                                delete output.ABindicator;
+                            }
+                            if (output.StateRoute) {
+                                output.SR = output.StateRoute;
+                                delete output.StateRoute;
+                            }
+                            return [2 /*return*/, output];
                     }
                 });
             });

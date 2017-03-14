@@ -1,4 +1,4 @@
-import { ArmCalcInput, ArmCalcOutput } from "./Messages";
+import { IArmCalcInput, IArmCalcOutput } from "./Messages";
 /**
  * Class that calls web service to perform ARM <=> SRMP calculations.
  */
@@ -15,23 +15,23 @@ export default class ArmCalculator {
      * @param {string} type - The type of output measure type: "Srmp" or "Arm".
      * @return {Promise.<ArmCalcOutput>}
      */
-    private performCalcGet(input, type);
     /**
      * Converts a value from ARM to SRMP.
      * @param {ArmCalcInput} input - Input parameters.
      * @return {Promise.<ArmCalcOutput>}
      */
-    calcSrmp(input: ArmCalcInput): Promise<ArmCalcOutput>;
+    calcSrmp(input: IArmCalcInput): Promise<IArmCalcOutput>;
     /**
      * Converts a value from SRMP to ARM.
      * @param {ArmCalcInput} input - Input parameters.
      * @return {Promise.<ArmCalcOutput>}
      */
-    calcArm(input: ArmCalcInput): Promise<ArmCalcOutput>;
+    calcArm(input: IArmCalcInput): Promise<IArmCalcOutput>;
     /**
      * Perform multiple HTTP requests with one web service request.
      * @param {ArmCalcInput[]} inputs - input parameters
      * @return {Promise.<ArmCalcOutput>}
      */
-    calcBatch(inputs: ArmCalcInput[]): Promise<ArmCalcOutput[]>;
+    calcBatch(inputs: IArmCalcInput[]): Promise<IArmCalcOutput[]>;
+    private performCalcGet(input, type);
 }
